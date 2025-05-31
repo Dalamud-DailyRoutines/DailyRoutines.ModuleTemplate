@@ -1,24 +1,20 @@
 using System.Collections.Generic;
 using DailyRoutines.Abstracts;
-using DailyRoutines.Helpers;
 using DailyRoutines.Managers;
 using Dalamud.Game.ClientState.Conditions;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
-using OmenTools;
-using OmenTools.Helpers;
-using OmenTools.Infos;
+using FFXIVClientStructs.FFXIV.Client.Game.Control;
+using Lumina.Excel.Sheets;
 
 namespace DailyRoutines.ModuleTemplate;
 
 public class AutoSoulsowModuleTemplate : DailyModuleBase
 {
-    public override ModuleInfo Info => new()
+    public override ModuleInfo Info { get; } = new()
     {
-        Title = "自动播魂种 (模块模板)",
-        Description = "Daily Routines 本地模块模板",
-        Category = ModuleCategories.Action,
+        Title       = GetLoc("AutoSoulsowTitle"),
+        Description = GetLoc("AutoSoulsowDescription"),
+        Category    = ModuleCategories.Action,
     };
 
     public override void Init()
@@ -28,19 +24,6 @@ public class AutoSoulsowModuleTemplate : DailyModuleBase
         DService.ClientState.TerritoryChanged += OnZoneChanged;
         DService.DutyState.DutyRecommenced    += OnDutyRecommenced;
         DService.Condition.ConditionChange    += OnConditionChanged;
-    }
-
-    public override void ConfigUI()
-    {
-        ImGui.Text("测试用文本");
-
-        if (ImGui.Button("测试用按钮"))
-        {
-            NotifyHelper.Chat("测试点击了一下");
-            HelpersOm.NotificationInfo("测试点了一下");
-        }
-        
-        ImGui.Text("现在又改了一点东西");
     }
 
     // 重新挑战
@@ -53,7 +36,7 @@ public class AutoSoulsowModuleTemplate : DailyModuleBase
     // 进入副本
     private void OnZoneChanged(ushort zone)
     {
-        if (LuminaCache.GetRow<TerritoryType>(zone) is not { ContentFinderCondition.Row: > 0 }) return;
+        if (LuminaGetter.GetRow<TerritoryType>(zone) is not { ContentFinderCondition.RowId: > 0 }) return;
 
         TaskHelper.Abort();
         TaskHelper.Enqueue(CheckCurrentJob);
@@ -65,14 +48,15 @@ public class AutoSoulsowModuleTemplate : DailyModuleBase
         if (flag is not ConditionFlag.InCombat) return;
         
         TaskHelper.Abort();
-        if (!value) TaskHelper.Enqueue(CheckCurrentJob);
+        if (!value) 
+            TaskHelper.Enqueue(CheckCurrentJob);
     }
 
     private bool? CheckCurrentJob()
     {
-        if (InfosOm.BetweenAreas || !HelpersOm.IsScreenReady() || InfosOm.OccupiedInEvent) return false;
+        if (BetweenAreas || !IsScreenReady() || OccupiedInEvent) return false;
         if (DService.Condition[ConditionFlag.InCombat] || 
-            DService.ClientState.LocalPlayer is not { ClassJob.Id: 39 } || !IsValidPVEDuty())
+            DService.ClientState.LocalPlayer is not { ClassJob.RowId: 39 } || !IsValidPVEDuty())
         {
             TaskHelper.Abort();
             return true;
@@ -84,11 +68,13 @@ public class AutoSoulsowModuleTemplate : DailyModuleBase
     
     private unsafe bool? UseRelatedActions()
     {
-        if (DService.ClientState.LocalPlayer is not { } localPlayer) return false;
-        var statusManager = localPlayer.ToBCStruct()->StatusManager;
+        var localPlayer = Control.GetLocalPlayer();
+        if (localPlayer == null) return null;
+
+        var statusManager = localPlayer->StatusManager;
 
         // 播魂种
-        if (statusManager.HasStatus(2594) || !HelpersOm.IsActionUnlocked(24387))
+        if (statusManager.HasStatus(2594) || !IsActionUnlocked(24387))
         {
             TaskHelper.Abort();
             return true;
@@ -106,9 +92,10 @@ public class AutoSoulsowModuleTemplate : DailyModuleBase
         HashSet<uint> InvalidContentTypes = [16, 17, 18, 19, 31, 32, 34, 35];
 
         var isPVP = GameMain.IsInPvPArea() || GameMain.IsInPvPInstance();
-        var contentData = LuminaCache.GetRow<ContentFinderCondition>(GameMain.Instance()->CurrentContentFinderConditionId);
+
+        var contentData = LuminaGetter.GetRow<ContentFinderCondition>(GameMain.Instance()->CurrentContentFinderConditionId);
         
-        return !isPVP && (contentData == null || !InvalidContentTypes.Contains(contentData.ContentType.Row));
+        return !isPVP && (contentData == null || !InvalidContentTypes.Contains(contentData.Value.ContentType.RowId));
     }
 
     public override void Uninit()

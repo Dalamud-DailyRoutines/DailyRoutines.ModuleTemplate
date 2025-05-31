@@ -2,25 +2,23 @@
   "version": 1,
   "dependencies": {
     "net8.0-windows7.0": {
-      "ILRepack": {
-        "type": "Transitive",
-        "resolved": "2.0.18",
-        "contentHash": "sR5Aj3JLDbA8JwESfWYfigSz5k1oNSHPN434W1LX8sboWJYEOSQP/KkvZGmJKPgajzSUKkl2jDar3LPZiMFU4Q=="
+      "DailyRoutines.CodeAnalysis": {
+        "type": "Direct",
+        "requested": "[1.1.0, )",
+        "resolved": "1.1.0",
+        "contentHash": "hR7s7swdLMXodYEx0592Abi1+eTtHRCYahNqF7vC1MlIefOOlMSqpLbU2Gk+fpguTxRRRACzql397a1Sl4N8GQ=="
       },
-      "Reloaded.Memory": {
-        "type": "Transitive",
-        "resolved": "7.1.0",
-        "contentHash": "4Y5tCsRWdW/shj9W7RqJq37LStuW1VVtjxsBp4LKZilPcjudeQg9k+u+6fnDgacCEJiG3S2EtcaiNtVMTdaSnQ=="
+      "DotNet.ReproducibleBuilds": {
+        "type": "Direct",
+        "requested": "[1.2.25, )",
+        "resolved": "1.2.25",
+        "contentHash": "xCXiw7BCxHJ8pF6wPepRUddlh2dlQlbr81gXA72hdk4FLHkKXas7EH/n+fk5UCA/YfMqG1Z6XaPiUjDbUNBUzg=="
       },
-      "clicklib": {
-        "type": "Project",
-        "dependencies": {
-          "ILRepack": "[2.0.18, )",
-          "Reloaded.Memory": "[7.1.0, )"
-        }
-      },
-      "omentools": {
-        "type": "Project"
+      "System.CodeDom": {
+        "type": "Direct",
+        "requested": "[9.0.1, )",
+        "resolved": "9.0.1",
+        "contentHash": "2J5uq+2smnj+u1jlyVJ6BGGqaK9fHcK/EwN7mbsuPqTI6dZr86br8Cg6o/5B+icQ9ANTvTDpJjnhDNtYYZijHQ=="
       }
     }
   }
