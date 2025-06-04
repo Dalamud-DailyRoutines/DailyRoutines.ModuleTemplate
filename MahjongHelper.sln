@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyRoutines.ModuleTemplate", "DailyRoutines.ModuleTemplate\DailyRoutines.ModuleTemplate.csproj", "{F8E53DC9-0D24-4E9C-8680-C06FA36C1DF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MahjongHelper", "MahjongHelper\MahjongHelper.csproj", "{F8E53DC9-0D24-4E9C-8680-C06FA36C1DF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

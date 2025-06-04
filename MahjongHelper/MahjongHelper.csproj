@@ -48,7 +48,7 @@
 
     <!-- 修改成你自己的 DR 路径 -->
     <PropertyGroup>
-        <DailyRoutinesPath>D:\Personal\Document\GitHub\DailyRoutines\bin\Debug\</DailyRoutinesPath>
+        <DailyRoutinesPath>E:\git\DR\DailyRoutines\bin\Debug\</DailyRoutinesPath>
     </PropertyGroup>
 
     <ItemGroup>
